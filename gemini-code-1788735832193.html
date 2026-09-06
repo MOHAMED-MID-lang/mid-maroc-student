@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#f59e0b">
+    <title>MID MAROC STUDENT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --header-bg: linear-gradient(135deg, #f59e0b, #d97706);
+            --header-text: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg-gray: #0f172a;
+            --card-bg: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --header-bg: linear-gradient(135deg, #1e293b, #0f172a);
+            --header-text: #f59e0b;
+        }
+
+        body.data-saver .post-video, 
+        body.data-saver .media-content {
+            display: none !important;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* هيكل المنصة المتجاوب */
+        .app-frame {
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-gray);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: none;
+            transition: background-color 0.3s;
+        }
+
+        /* شاشة تسجيل الدخول */
+        .auth-screen {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #d97706, #f59e0b);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .auth-card {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            padding: 24px 18px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+        }
+
+        .auth-logo {
+            width: 56px; height: 56px;
+            background: #ffffff;
+            color: #d97706;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            margin: 0 auto 10px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .auth-input, .auth-select {
+            width: 100%;
+            padding: 9px 34px 9px 12px !important;
+            border-radius: 10px !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+            outline: none;
+            font-size: 11px !important;
+            margin: 0 !important;
+        }
+
+        .auth-select option {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        /* الهيدر والتنقل */
+        .app-header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 14px 16px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            width: 34px; height: 34px;
+            background: #ffffff;
+            color: #d97706;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .icon-btn.active-saver {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .search-input-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input-box i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            font-size: 11px;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            padding-bottom: 75px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 10px 4px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            margin: 0 auto 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .menu-label {
+            font-size: 9px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .student-id-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            border-radius: 16px;
+            padding: 14px;
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .id-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+
+        .id-body {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 46px; height: 46px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .id-details {
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        select, input[type="text"], input[type="password"], input[type="number"], input[type="time"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            font-size: 11px;
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 9px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .feed-post {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .post-avatar {
+            width: 32px; height: 32px;
+            background: #d97706;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .post-video {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 8px;
+            background: #000;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        .post-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .post-btn.liked {
+            color: #e11d48;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 90;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 9px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            width: 14%;
+        }
+
+        .nav-btn i {
+            font-size: 14px;
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.2s;
+            z-index: 100;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: var(--card-bg);
+            color: var(--text-dark);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 16px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .timetable-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            border-right: 4px solid var(--primary);
+        }
+
+        .dev-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dev-avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid #f59e0b;
+            margin: 0 auto 8px;
+            background: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .badge-tag {
+            background: var(--primary);
+            color: white;
+            font-size: 8px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 4px;
+        }
+
+        /* تحسينات خصيصاً للشاشات الكبيرة والحواسيب */
+        @media(min-width: 768px) {
+            .app-header {
+                padding: 20px 40px;
+            }
+
+            .app-content {
+                max-width: 1000px;
+                margin: 0 auto;
+                width: 100%;
+                padding: 24px;
+                padding-bottom: 90px;
+            }
+
+            .grid-menu {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+
+            .student-id-card {
+                max-width: 500px;
+                margin: 0 auto 20px auto;
+            }
+
+            .nav-bar {
+                max-width: 1000px;
+                margin: 0 auto;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 16px 16px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-frame" id="appFrame">
+        
+        <!-- شاشة تسجيل الدخول -->
+        <div class="auth-screen" id="authScreen">
+            <div class="auth-card">
+                <div class="auth-logo"><i class="fas fa-graduation-cap"></i></div>
+                <h2 style="font-size: 15px; font-weight: 800; margin-bottom: 2px;" id="authTitle">MID MAROC STUDENT</h2>
+                <p style="font-size: 10px; opacity: 0.85; margin-bottom: 14px;" id="authSub">منصة الطالب والخدمات الجامعية بالمغرب</p>
+                
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginUser" class="auth-input" placeholder="اسم الطالب الكامل / CNE">
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-university"></i>
+                    <select id="loginUni" class="auth-select" onchange="updateCollegesOptions('loginUni', 'loginFaculty')">
+                        <option value="">اختر الجامعة المغربية...</option>
+                        <option value="um5">جامعة محمد الخامس - الرباط</option>
+                        <option value="uh2">جامعة الحسن الثاني - الدار البيضاء</option>
+                        <option value="uca">جامعة القاضي عياض - مراكش</option>
+                        <option value="usmba">جامعة سيدي محمد بن عبد الله - فاس</option>
+                        <option value="uit">جامعة ابن طفيل - القنيطرة</option>
+                        <option value="uiz">جامعة ابن زهر - أكادير</option>
+                        <option value="uae">جامعة عبد المالك السعدي - تطوان/طنجة</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-building-columns"></i>
+                    <select id="loginFaculty" class="auth-select">
+                        <option value="">اختر الكلية / المؤسسة...</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPass" class="auth-input" placeholder="كلمة السر">
+                </div>
+                
+                <button class="btn-action" style="margin-top: 8px;" onclick="handleAuth()">
+                    <i class="fas fa-right-to-bracket"></i> دخول واستكشاف المنصة
+                </button>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <header class="app-header">
+            <div class="header-top">
+                <div class="brand">
+                    <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div>
+                        <h1 style="font-size: 12px; font-weight: 800;">MID MAROC STUDENT</h1>
+                        <p style="font-size: 9px; opacity: 0.9;" id="txt-subhead">دليل الطالب الجامعي المغربي</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="btnDataSaver" onclick="toggleDataSaver()" title="توفير البيانات"><i class="fas fa-wifi"></i></button>
+                    <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+                    <button class="icon-btn" onclick="switchTab('settings')"><i class="fas fa-gear"></i></button>
+                </div>
+            </div>
+            <div class="search-input-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن مساطر، امتحانات، أو مجموعات..." onkeyup="filterCards()">
+            </div>
+        </header>
+
+        <!-- محتوى التطبيق -->
+        <main class="app-content">
+
+            <!-- الصفحة 1: الرئيسية -->
+            <div id="page-home" class="page active">
+                
+                <div class="student-id-card">
+                    <div class="id-header">
+                        <span style="font-size: 10px; font-weight: bold; color: #f59e0b;"><i class="fas fa-id-card"></i> بطاقة الطالب الرقمية</span>
+                        <span style="font-size: 8px; opacity: 0.7;">MAROC</span>
+                    </div>
+                    <div class="id-body">
+                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
+                        <div class="id-details">
+                            <div style="font-weight: bold; font-size: 12px;" id="cardStudentName">طالب جديد</div>
+                            <div style="opacity: 0.85; font-size: 9px;" id="cardUniversity">جامعة محمد الخامس</div>
+                            <div style="font-size: 9px; color: #f59e0b;" id="cardFaculty">كلية العلوم القانونية والإقتصادية FSJES</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-menu">
+                    <div class="menu-item" onclick="switchTab('feed')">
+                        <div class="menu-icon" style="background:#fce7f3; color:#db2777;"><i class="fas fa-photo-film"></i></div>
+                        <div class="menu-label">فضاء الطلاب</div>
+                    </div>
+                    <div class="menu-item" onclick="switchTab('archive')">
+                        <div class="menu-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-box-archive"></i></div>
+                        <div class="menu-label">بنك الامتحانات</div>
+                    </div>
+                    <div class="menu-item" onclick="switchTab('groups')">
+                        <div class="menu-icon" style="background:#dbeafe; color:#2563eb;"><i class="fas fa-users-rectangle"></i></div>
+                        <div class="menu-label">المجموعات</div>
+                    </div>
+                    <div class="menu-item" onclick="switchTab('timetable')">
+                        <div class="menu-icon" style="background:#e0e7ff; color:#4f46e5;"><i class="fas fa-calendar-days"></i></div>
+                        <div class="menu-label">جدول الحصص</div>
+                    </div>
+                </div>
+
+                <div style="font-size: 11px; font-weight: bold; margin-bottom: 8px; color: var(--text-dark);"><i class="fas fa-bullhorn" style="color:var(--primary);"></i> المستجدات الجامعية والمنحة</div>
+                
+                <div class="card search-item">
+                    <div class="card-title"><i class="fas fa-hand-holding-dollar" style="color:#d97706;"></i> صرف الشطر الجديد للمنحة الجامعية</div>
+                    <div class="card-desc">بداية تحويل مستحقات المنحة الجامعية والتكوين المهني لمنحتي.</div>
+                </div>
+            </div>
+
+            <!-- الصفحة 2: فضاء الطلاب -->
+            <div id="page-feed" class="page">
+                <div class="card" style="margin-bottom:10px;">
+                    <div class="card-title"><i class="fas fa-pen-to-square" style="color:var(--primary);"></i> إنشاء منشور أو فيديو تجريبي</div>
+                    <textarea id="newPostText" rows="2" placeholder="شارك ملخصاً، سؤالاً، أو مقطع فيديو مفيد مع زملائك..." style="margin-bottom:6px;"></textarea>
+                    <button class="btn-action" onclick="addStudentPost()"><i class="fas fa-paper-plane"></i> نشر في فضاء الكلية</button>
+                </div>
+
+                <div id="postsContainer">
+                    <div class="feed-post">
+                        <div class="post-author">
+                            <div class="post-avatar"><i class="fas fa-user-graduate"></i></div>
+                            <div>
+                                <div style="font-size:11px; font-weight:bold;">مريم العلمي</div>
+                                <div style="font-size:8px; color:var(--text-muted);">جامعة محمد الخامس - FSJES السويسي</div>
+                            </div>
+                        </div>
+                        <p style="font-size:11px; line-height:1.4;">فيديو توضيحي يشرح منهجية إعداد العروض وتحليل النوازل القانونية بشكل مبسط 📚👇</p>
+                        <video class="post-video" controls poster="https://via.placeholder.com/400x220/1e293b/ffffff?text=شرح+منهجية+التحليل+القانوني">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                        <div class="post-actions">
+                            <button class="post-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i> <span class="like-count">24</span> إعجاب</button>
+                            <button class="post-btn" onclick="showModal('التعليقات', '• ياسين: فيديو ممتاز جزاك الله خيراً')"><i class="fas fa-comment"></i> تعليق</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الصفحة 3: بنك نماذج الامتحانات والملخصات -->
+            <div id="page-archive" class="page">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-box-archive" style="color:var(--primary);"></i> الأرشيف التشاركي للامتحانات والملخصات</div>
+                    <div class="card-desc">أرشيف مفتوح لجميع الطلاب لمشاركة النوازل والملخصات والأسئلة السابقة بين مختلف الكليات.</div>
+                </div>
+
+                <!-- نموذج إضافة امتحان أو ملخص -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-cloud-arrow-up" style="color:var(--primary);"></i> مشاركة ملخص أو نموذج امتحان جديد</div>
+                    
+                    <input type="text" id="archiveTitleInput" placeholder="عنوان المادة أو الامتحان (مثال: مدخل للعلوم القانونية)">
+                    
+                    <div style="display:flex; gap:6px;">
+                        <select id="archiveTypeSelect">
+                            <option value="امتحان">نموذج امتحان</option>
+                            <option value="نازلة">نازلة قانونية</option>
+                            <option value="ملخص">ملخص درس</option>
+                        </select>
+                        
+                        <select id="archiveUniSelect" onchange="updateCollegesOptions('archiveUniSelect', 'archiveFacultySelect')">
+                            <option value="">اختر الجامعة...</option>
+                            <option value="um5">جامعة محمد الخامس</option>
+                            <option value="uh2">جامعة الحسن الثاني</option>
+                            <option value="uca">جامعة القاضي عياض</option>
+                            <option value="usmba">جامعة سيدي محمد بن عبد الله</option>
+                            <option value="uit">جامعة ابن طفيل</option>
+                            <option value="uiz">جامعة ابن زهر</option>
+                            <option value="uae">جامعة عبد المالك السعدي</option>
+                        </select>
+                    </div>
+
+                    <select id="archiveFacultySelect">
+                        <option value="">اختر الكلية أولاً...</option>
+                    </select>
+
+                    <textarea id="archiveDescInput" rows="3" placeholder="أضف تفاصيل على هذا النموذج (مثل الأسئلة، منهجية الحل، ملاحظات الأستاذ...)"></textarea>
+
+                    <button class="btn-action" onclick="addArchiveItem()"><i class="fas fa-share-nodes"></i> نشر النموذج لجميع الطلبة</button>
+                </div>
+
+                <!-- قائمة النماذج المشاركة -->
+                <div id="archiveListContainer">
+                    <div class="card search-item">
+                        <div class="card-title">
+                            <i class="fas fa-scale-balanced" style="color:#2563eb;"></i> 
+                            القانون المدني - نازلية الالتزامات S3 
+                            <span class="badge-tag">نازلة</span>
+                        </div>
+                        <div style="font-size:9px; color:var(--primary-dark); font-weight:bold; margin-bottom:4px;">
+                            <i class="fas fa-university"></i> جامعة محمد الخامس - كلية FSJES السويسي
+                        </div>
+                        <div class="card-desc">نموذج امتحان الدورة العادية + الحل المنهجي المقترح والتأطير القانوني.</div>
+                        <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('نازلة القانون المدني S3', '• الجامعة: جامعة محمد الخامس\n• الكلية: FSJES السويسي\n\n• التفاصيل:\n1. تحليل نازلة تتعلق بإبطال العقد للغبن.\n2. المفهوم القانوني للغبن.\n3. الشروط والأحكام الفقهية التطبيقية.')"><i class="fas fa-file-pdf"></i> قراءة التفاصيل وقراءة النازلة</button>
+                    </div>
+
+                    <div class="card search-item">
+                        <div class="card-title">
+                            <i class="fas fa-file-circle-check" style="color:#16a34a;"></i> 
+                            أسئلة مادة المدخل للعلوم القانونية S1 
+                            <span class="badge-tag">امتحان</span>
+                        </div>
+                        <div style="font-size:9px; color:var(--primary-dark); font-weight:bold; margin-bottom:4px;">
+                            <i class="fas fa-university"></i> جامعة ابن طفيل - كلية العلوم القانونية والسياسية
+                        </div>
+                        <div class="card-desc">نماذج امتحانات الأستاذ مع نمط الأسئلة المباشرة QCM والأسئلة المقالية.</div>
+                        <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('أرشيف S1', '• الجامعة: جامعة ابن طفيل\n\n• التفاصيل:\n- نموذج 2023: قارن بين القاعدة القانونية والقواعد الأخلاقية.\n- نموذج 2024 (QCM): 20 سؤالاً مع التصحيح.')"><i class="fas fa-eye"></i> استعراض التفاصيل</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الصفحة 4: نظام المجموعات والتأطير -->
+            <div id="page-groups" class="page">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-users-rectangle" style="color:var(--primary);"></i> مجموعات التنسيق والتأطير الطلابية</div>
+                    <div class="card-desc">انضم إلى مجموعة شعبتك لمراجعة المواد وتنسيق ملخصات المحاضرات.</div>
+                </div>
+
+                <div class="card search-item">
+                    <div class="card-title"><i class="fas fa-user-group" style="color:#d97706;"></i> مجموعة شعبة القانون باللغة العربية (S3 - الفوج B)</div>
+                    <div class="card-desc">عدد الأعضاء: 142 طالب • التخصص: القانون الخاص • الكلية: FSJES</div>
+                    <button class="btn-action" style="margin-top:6px;" onclick="alert('تم إرسال طلب الانضمام إلى مجموعة التحضير الجماعي!')"><i class="fas fa-user-plus"></i> انضمام للمجموعة</button>
+                </div>
+
+                <div class="card search-item">
+                    <div class="card-title"><i class="fas fa-user-group" style="color:#2563eb;"></i> مجموعة الإقتصاد والتدبير / Economie S1</div>
+                    <div class="card-desc">عدد الأعضاء: 89 طالب • تبادل تمارين Microéconomie و Comptabilité.</div>
+                    <button class="btn-action" style="margin-top:6px;" onclick="alert('تم إرسال طلب الانضمام!')"><i class="fas fa-user-plus"></i> انضمام للمجموعة</button>
+                </div>
+            </div>
+
+            <!-- الصفحة 5: جدول الحصص والامتحانات -->
+            <div id="page-timetable" class="page">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-calendar-days" style="color:var(--primary);"></i> جدول المحاضرات والـ TD الخاص بي</div>
+                    <div class="card-desc">أضف حصص الفوج (Groupe) وامتحاناتك للتتبع والتذكير.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-plus"></i> إضافة حصة / امتحان جديد</div>
+                    <input type="text" id="ttSubject" placeholder="اسم المادة (مثال: القانون التجاري)">
+                    <div style="display:flex; gap:6px;">
+                        <select id="ttDay">
+                            <option value="الإثنين">الإثنين</option>
+                            <option value="الثلاثاء">الثلاثاء</option>
+                            <option value="الأربعاء">الأربعاء</option>
+                            <option value="الخميس">الخميس</option>
+                            <option value="الجمعة">الجمعة</option>
+                            <option value="السبت">السبت</option>
+                        </select>
+                        <input type="time" id="ttTime">
+                    </div>
+                    <button class="btn-action" onclick="addTimetableItem()"><i class="fas fa-calendar-plus"></i> إضافة للجدول</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-clock"></i> حصصي المبرمجة</div>
+                    <div id="timetableList">
+                        <div class="timetable-item">
+                            <div>
+                                <div style="font-weight:bold; font-size:11px;">القانون الجنائي العام (محاضرة)</div>
+                                <div style="font-size:9px; color:var(--text-muted);">الإثنين • الساعة 08:30 - المدرج 4</div>
+                            </div>
+                            <span class="badge" style="background:#fef3c7; color:#d97706;">S3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الصفحة 6: الإعدادات والمعلومات والمطور -->
+            <div id="page-settings" class="page">
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-wifi" style="color:var(--primary);"></i> خيارات استهلاك الإنترنت</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:11px;">وضع توفير البيانات (إخفاء الصور والفيديو):</span>
+                        <button class="btn-action" style="width:auto; padding:4px 10px;" onclick="toggleDataSaver()"><i class="fas fa-sliders"></i> تبديل</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-language" style="color:var(--primary);"></i> لغة المنصة / Langue</div>
+                    <select id="appLanguage" onchange="changeAppLanguage()">
+                        <option value="ar">العربية (Arabic)</option>
+                        <option value="fr">Français (الفرنسية)</option>
+                        <option value="ber">ⵜⴰⵎⴰⵣⵉⵖⵜ (الأمازيغية)</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user-gear"></i> بيانات الطالب والجامعة</div>
+                    
+                    <label style="font-size:10px; font-weight:bold;">اسم الطالب:</label>
+                    <input type="text" id="inputFirstName" value="طالب جديد" placeholder="الاسم الكامل">
+
+                    <label style="font-size:10px; font-weight:bold;">الجامعة المغربية:</label>
+                    <select id="profileUni" onchange="updateCollegesOptions('profileUni', 'profileFaculty')">
+                        <option value="um5">جامعة محمد الخامس - الرباط</option>
+                        <option value="uh2">جامعة الحسن الثاني - الدار البيضاء</option>
+                        <option value="uca">جامعة القاضي عياض - مراكش</option>
+                        <option value="usmba">جامعة سيدي محمد بن عبد الله - فاس</option>
+                        <option value="uit">جامعة ابن طفيل - القنيطرة</option>
+                        <option value="uiz">جامعة ابن زهر - أكادير</option>
+                        <option value="uae">جامعة عبد المالك السعدي - تطوان/طنجة</option>
+                    </select>
+
+                    <label style="font-size:10px; font-weight:bold;">الكلية / المؤسسة:</label>
+                    <select id="profileFaculty">
+                        <option value="FSJES">كلية العلوم القانونية والاقتصادية (FSJES)</option>
+                    </select>
+
+                    <button class="btn-action" onclick="saveProfileData()"><i class="fas fa-floppy-disk"></i> حفظ وتحديث البيانات</button>
+                </div>
+
+                <div class="dev-card">
+                    <div class="dev-avatar"><i class="fas fa-code"></i></div>
+                    <h3 style="font-size: 14px; font-weight: 800;">محمد مياد (Mohamed Miad)</h3>
+                    <p style="font-size: 10px; opacity: 0.8; margin-bottom: 12px;">مطور تطبيق ومنصة MID MAROC STUDENT</p>
+                    
+                    <a href="https://www.instagram.com/mohamed_miad?stkn=eGEzZmY1Zmk5b2dx" target="_blank" class="btn-action btn-instagram">
+                        <i class="fab fa-instagram" style="font-size: 14px;"></i> متابعة المطور على إنستغرام
+                    </a>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- نافذة عرض التفاصيل Modal -->
+        <div id="modalOverlay" class="modal-overlay" onclick="closeModalOutside(event)">
+            <div class="modal-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">
+                    <div id="modalTitle" style="font-weight: bold; font-size: 12px;"></div>
+                    <button onclick="closeModal()" style="border:none; background:none; font-weight:bold; cursor:pointer; color:var(--text-dark);"><i class="fas fa-xmark"></i></button>
+                </div>
+                <div id="modalBody" style="font-size: 11px; line-height: 1.5; color: var(--text-muted); white-space: pre-line;"></div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <nav class="nav-bar">
+            <button class="nav-btn active" onclick="switchTab('home')">
+                <i class="fas fa-house"></i> <span>الرئيسية</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('feed')">
+                <i class="fas fa-photo-film"></i> <span>الفضاء</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('archive')">
+                <i class="fas fa-box-archive"></i> <span>الأرشيف</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('groups')">
+                <i class="fas fa-users"></i> <span>المجموعات</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('timetable')">
+                <i class="fas fa-calendar-days"></i> <span>الجدول</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('settings')">
+                <i class="fas fa-gear"></i> <span>الإعدادات</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        const moroccanUniversities = {
+            um5: { name: "جامعة محمد الخامس - الرباط", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - السويسي", "كلية العلوم القانونية والاقتصادية FSJES - أكدال", "كلية الآداب والعلوم الإنسانية FLSH", "كلية العلوم FS"] },
+            uh2: { name: "جامعة الحسن الثاني - الدار البيضاء", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - عين الشق", "كلية العلوم القانونية والاقتصادية FSJES - المحمدية", "كلية الآداب FLSH"] },
+            uca: { name: "جامعة القاضي عياض - مراكش", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - مراكش", "كلية اللغة العربية", "كلية العلوم السملالية"] },
+            usmba: { name: "جامعة سيدي محمد بن عبد الله - فاس", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - فاس", "كلية الآداب ظهر المهراز"] },
+            uit: { name: "جامعة ابن طفيل - القنيطرة", faculties: ["كلية العلوم القانونية والسياسية FSJP - القنيطرة", "كلية الاقتصاد والتدبير FEG"] },
+            uiz: { name: "جامعة ابن زهر - أكادير", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - أكادير", "الكلية المتعددة التخصصات - تارودانت"] },
+            uae: { name: "جامعة عبد المالك السعدي - تطوان/طنجة", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - طنجة", "كلية العلوم القانونية FSJES - تطوان"] }
+        };
+
+        function updateCollegesOptions(uniSelectId, facultySelectId) {
+            const uniKey = document.getElementById(uniSelectId).value;
+            const facultySelect = document.getElementById(facultySelectId);
+            facultySelect.innerHTML = '<option value="">اختر الكلية / المؤسسة...</option>';
+            
+            if(uniKey && moroccanUniversities[uniKey]) {
+                moroccanUniversities[uniKey].faculties.forEach(fac => {
+                    const opt = document.createElement('option');
+                    opt.value = fac;
+                    opt.textContent = fac;
+                    facultySelect.appendChild(opt);
+                });
+            }
+        }
+
+        function handleAuth() {
+            const user = document.getElementById('loginUser').value.trim();
+            const uniKey = document.getElementById('loginUni').value;
+            const faculty = document.getElementById('loginFaculty').value;
+
+            if(!user || !uniKey) {
+                alert('يرجى كتابة اسمك واختيار الجامعة لتقديم الخدمات المخصصة لك');
+                return;
+            }
+
+            document.getElementById('inputFirstName').value = user;
+            if(uniKey) document.getElementById('profileUni').value = uniKey;
+            
+            updateCollegesOptions('profileUni', 'profileFaculty');
+            if(faculty) document.getElementById('profileFaculty').value = faculty;
+
+            saveProfileData(false);
+            document.getElementById('authScreen').style.display = 'none';
+        }
+
+        function saveProfileData(showModalAlert = true) {
+            const name = document.getElementById('inputFirstName').value.trim();
+            const uniKey = document.getElementById('profileUni').value;
+            const faculty = document.getElementById('profileFaculty').value;
+
+            if(name) document.getElementById('cardStudentName').innerText = name;
+            if(uniKey && moroccanUniversities[uniKey]) {
+                document.getElementById('cardUniversity').innerText = moroccanUniversities[uniKey].name;
+            }
+            if(faculty) {
+                document.getElementById('cardFaculty').innerText = faculty;
+            }
+
+            if(showModalAlert) {
+                showModal('تحديث الحساب', 'تم تحديث البيانات بنجاح!');
+            }
+        }
+
+        function addArchiveItem() {
+            const title = document.getElementById('archiveTitleInput').value.trim();
+            const type = document.getElementById('archiveTypeSelect').value;
+            const uniKey = document.getElementById('archiveUniSelect').value;
+            const faculty = document.getElementById('archiveFacultySelect').value;
+            const desc = document.getElementById('archiveDescInput').value.trim();
+
+            if(!title || !uniKey || !desc) {
+                alert('يرجى ملا جميع البيانات (العنوان، الجامعة، والتفاصيل)');
+                return;
+            }
+
+            const uniName = moroccanUniversities[uniKey] ? moroccanUniversities[uniKey].name : 'جامعة مغربية';
+            const studentName = document.getElementById('cardStudentName').innerText || 'طالب';
+
+            const cardHtml = `
+                <div class="card search-item">
+                    <div class="card-title">
+                        <i class="fas fa-file-lines" style="color:var(--primary);"></i> 
+                        ${title}
+                        <span class="badge-tag">${type}</span>
+                    </div>
+                    <div style="font-size:9px; color:var(--primary-dark); font-weight:bold; margin-bottom:4px;">
+                        <i class="fas fa-university"></i> ${uniName} ${faculty ? ' - ' + faculty : ''}
+                    </div>
+                    <div class="card-desc">${desc.length > 70 ? desc.substring(0, 70) + '...' : desc}</div>
+                    <div style="font-size:8px; color:var(--text-muted); margin-top:4px;">بواسطة الطالب: ${studentName}</div>
+                    <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('${title}', '• الجامعة: ${uniName}\n• الكلية: ${faculty}\n• نوع المشاركة: ${type}\n• الناشر: ${studentName}\n\n• التفاصيل:\n${desc}')">
+                        <i class="fas fa-eye"></i> قراءة التفاصيل كاملة
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('archiveListContainer').insertAdjacentHTML('afterbegin', cardHtml);
+
+            document.getElementById('archiveTitleInput').value = '';
+            document.getElementById('archiveDescInput').value = '';
+            alert('تم نشر النموذج بنجاح في أرشيف الطلبة!');
+        }
+
+        function toggleDataSaver() {
+            document.body.classList.toggle('data-saver');
+            const btn = document.getElementById('btnDataSaver');
+            if(document.body.classList.contains('data-saver')) {
+                btn.classList.add('active-saver');
+                alert('تم تفعيل وضع توفير البيانات (تقليل استهلاك الإنترنت وإخفاء الفيديو)');
+            } else {
+                btn.classList.remove('active-saver');
+                alert('تم إيقاف وضع توفير البيانات');
+            }
+        }
+
+        function addTimetableItem() {
+            const subject = document.getElementById('ttSubject').value.trim();
+            const day = document.getElementById('ttDay').value;
+            const time = document.getElementById('ttTime').value;
+
+            if(!subject || !time) {
+                alert('يرجى كتابة اسم المادة وتحديد الوقت');
+                return;
+            }
+
+            const itemHtml = `
+                <div class="timetable-item">
+                    <div>
+                        <div style="font-weight:bold; font-size:11px;">${subject}</div>
+                        <div style="font-size:9px; color:var(--text-muted);">${day} • الساعة ${time}</div>
+                    </div>
+                    <span class="badge" style="background:#dbeafe; color:#2563eb;">حصتي</span>
+                </div>
+            `;
+
+            document.getElementById('timetableList').insertAdjacentHTML('afterbegin', itemHtml);
+            document.getElementById('ttSubject').value = '';
+            document.getElementById('ttTime').value = '';
+        }
+
+        function changeAppLanguage() {
+            const lang = document.getElementById('appLanguage').value;
+            if(lang === 'fr') {
+                document.getElementById('txt-subhead').innerText = "Guide de l'étudiant marocain";
+                alert("Langue changée en Français");
+            } else if(lang === 'ber') {
+                document.getElementById('txt-subhead').innerText = "ⴰⵎⴰⵏⴰⵔ anyⵍⵎⴰⴷ ⴰⵎⵖⵔⵉⴱⵉ";
+                alert("تم التغيير إلى الأمازيغية");
+            } else {
+                document.getElementById('txt-subhead').innerText = "دليل الطالب الجامعي المغربي";
+            }
+        }
+
+        function addStudentPost() {
+            const text = document.getElementById('newPostText').value.trim();
+            if(!text) return;
+
+            const studentName = document.getElementById('cardStudentName').innerText;
+            const facultyName = document.getElementById('cardFaculty').innerText;
+
+            const postHtml = `
+                <div class="feed-post">
+                    <div class="post-author">
+                        <div class="post-avatar" style="background:#16a34a;"><i class="fas fa-user-graduate"></i></div>
+                        <div>
+                            <div style="font-size:11px; font-weight:bold;">${studentName}</div>
+                            <div style="font-size:8px; color:var(--text-muted);">${facultyName}</div>
+                        </div>
+                    </div>
+                    <p style="font-size:11px; line-height:1.4;">${text}</p>
+                    <div class="post-actions">
+                        <button class="post-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i> <span class="like-count">0</span> إعجاب</button>
+                        <button class="post-btn" onclick="showModal('التعليقات', 'لا توجد تعليقات بعد')"><i class="fas fa-comment"></i> تعليق</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('postsContainer').insertAdjacentHTML('afterbegin', postHtml);
+            document.getElementById('newPostText').value = '';
+        }
+
+        function toggleLike(btn) {
+            const countSpan = btn.querySelector('.like-count');
+            let currentLikes = parseInt(countSpan.innerText);
+            if(btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                countSpan.innerText = currentLikes - 1;
+            } else {
+                btn.classList.add('liked');
+                countSpan.innerText = currentLikes + 1;
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-bar .nav-btn').forEach(b => b.classList.remove('active'));
+            
+            const targetPage = document.getElementById('page-' + tabId);
+            if(targetPage) targetPage.classList.add('active');
+            
+            const btns = document.querySelectorAll('.nav-bar .nav-btn');
+            if(tabId === 'home') btns[0].classList.add('active');
+            if(tabId === 'feed') btns[1].classList.add('active');
+            if(tabId === 'archive') btns[2].classList.add('active');
+            if(tabId === 'groups') btns[3].classList.add('active');
+            if(tabId === 'timetable') btns[4].classList.add('active');
+            if(tabId === 'settings') btns[5].classList.add('active');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function showModal(title, text) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = text;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function closeModalOutside(e) {
+            if(e.target.id === 'modalOverlay') closeModal();
+        }
+
+        function filterCards() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let items = document.querySelectorAll('.search-item');
+            items.forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+            });
+        }
+
+        window.onload = function() {
+            updateCollegesOptions('profileUni', 'profileFaculty');
+            updateCollegesOptions('archiveUniSelect', 'archiveFacultySelect');
+        };
+    </script>
+</body>
+</html>
