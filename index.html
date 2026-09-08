@@ -33,7 +33,8 @@
         }
 
         body.data-saver .post-video, 
-        body.data-saver .media-content {
+        body.data-saver .media-content,
+        body.data-saver img.post-img {
             display: none !important;
         }
 
@@ -52,7 +53,6 @@
             min-height: 100vh;
         }
 
-        /* هيكل المنصة المتجاوب */
         .app-frame {
             width: 100%;
             max-width: 100%;
@@ -65,7 +65,6 @@
             transition: background-color 0.3s;
         }
 
-        /* شاشة تسجيل الدخول */
         .auth-screen {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -147,7 +146,6 @@
             color: #fff;
         }
 
-        /* الهيدر والتنقل */
         .app-header {
             background: var(--header-bg);
             color: var(--header-text);
@@ -342,7 +340,7 @@
             line-height: 1.4;
         }
 
-        select, input[type="text"], input[type="password"], input[type="number"], input[type="time"], textarea {
+        select, input[type="text"], input[type="password"], input[type="number"], input[type="time"], textarea, input[type="file"] {
             width: 100%;
             padding: 8px;
             margin-top: 4px;
@@ -402,11 +400,13 @@
             font-size: 14px;
         }
 
-        .post-video {
+        .post-video, .post-img {
             width: 100%;
             border-radius: 10px;
             margin-top: 8px;
             background: #000;
+            max-height: 350px;
+            object-fit: cover;
         }
 
         .post-actions {
@@ -538,37 +538,12 @@
             margin-right: 4px;
         }
 
-        /* تحسينات خصيصاً للشاشات الكبيرة والحواسيب */
         @media(min-width: 768px) {
-            .app-header {
-                padding: 20px 40px;
-            }
-
-            .app-content {
-                max-width: 1000px;
-                margin: 0 auto;
-                width: 100%;
-                padding: 24px;
-                padding-bottom: 90px;
-            }
-
-            .grid-menu {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 16px;
-            }
-
-            .student-id-card {
-                max-width: 500px;
-                margin: 0 auto 20px auto;
-            }
-
-            .nav-bar {
-                max-width: 1000px;
-                margin: 0 auto;
-                left: 50%;
-                transform: translateX(-50%);
-                border-radius: 16px 16px 0 0;
-            }
+            .app-header { padding: 20px 40px; }
+            .app-content { max-width: 1000px; margin: 0 auto; width: 100%; padding: 24px; padding-bottom: 90px; }
+            .grid-menu { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+            .student-id-card { max-width: 500px; margin: 0 auto 20px auto; }
+            .nav-bar { max-width: 1000px; margin: 0 auto; left: 50%; transform: translateX(-50%); border-radius: 16px 16px 0 0; }
         }
     </style>
 </head>
@@ -647,7 +622,6 @@
 
             <!-- الصفحة 1: الرئيسية -->
             <div id="page-home" class="page active">
-                
                 <div class="student-id-card">
                     <div class="id-header">
                         <span style="font-size: 10px; font-weight: bold; color: #f59e0b;"><i class="fas fa-id-card"></i> بطاقة الطالب الرقمية</span>
@@ -693,9 +667,13 @@
             <!-- الصفحة 2: فضاء الطلاب -->
             <div id="page-feed" class="page">
                 <div class="card" style="margin-bottom:10px;">
-                    <div class="card-title"><i class="fas fa-pen-to-square" style="color:var(--primary);"></i> إنشاء منشور أو فيديو تجريبي</div>
+                    <div class="card-title"><i class="fas fa-pen-to-square" style="color:var(--primary);"></i> إنشاء منشور أو رفع ميديا</div>
                     <textarea id="newPostText" rows="2" placeholder="شارك ملخصاً، سؤالاً، أو مقطع فيديو مفيد مع زملائك..." style="margin-bottom:6px;"></textarea>
-                    <button class="btn-action" onclick="addStudentPost()"><i class="fas fa-paper-plane"></i> نشر في فضاء الكلية</button>
+                    
+                    <label style="font-size:10px; font-weight:bold; color:var(--text-muted);">إرفاق فيديو/صورة (اختياري):</label>
+                    <input type="file" id="newPostFile" accept="image/*,video/*">
+
+                    <button class="btn-action" id="btnPublishPost" onclick="addStudentPost()"><i class="fas fa-paper-plane"></i> نشر في فضاء الكلية</button>
                 </div>
 
                 <div id="postsContainer">
@@ -726,7 +704,6 @@
                     <div class="card-desc">أرشيف مفتوح لجميع الطلاب لمشاركة النوازل والملخصات والأسئلة السابقة بين مختلف الكليات.</div>
                 </div>
 
-                <!-- نموذج إضافة امتحان أو ملخص -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-cloud-arrow-up" style="color:var(--primary);"></i> مشاركة ملخص أو نموذج امتحان جديد</div>
                     
@@ -757,10 +734,12 @@
 
                     <textarea id="archiveDescInput" rows="3" placeholder="أضف تفاصيل على هذا النموذج (مثل الأسئلة، منهجية الحل، ملاحظات الأستاذ...)"></textarea>
 
-                    <button class="btn-action" onclick="addArchiveItem()"><i class="fas fa-share-nodes"></i> نشر النموذج لجميع الطلبة</button>
+                    <label style="font-size:10px; font-weight:bold; color:var(--text-muted);">إرفاق ملف/صورة الملخص (اختياري):</label>
+                    <input type="file" id="archiveFileInput" accept="image/*,application/pdf">
+
+                    <button class="btn-action" id="btnPublishArchive" onclick="addArchiveItem()"><i class="fas fa-share-nodes"></i> نشر النموذج لجميع الطلبة</button>
                 </div>
 
-                <!-- قائمة النماذج المشاركة -->
                 <div id="archiveListContainer">
                     <div class="card search-item">
                         <div class="card-title">
@@ -773,19 +752,6 @@
                         </div>
                         <div class="card-desc">نموذج امتحان الدورة العادية + الحل المنهجي المقترح والتأطير القانوني.</div>
                         <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('نازلة القانون المدني S3', '• الجامعة: جامعة محمد الخامس\n• الكلية: FSJES السويسي\n\n• التفاصيل:\n1. تحليل نازلة تتعلق بإبطال العقد للغبن.\n2. المفهوم القانوني للغبن.\n3. الشروط والأحكام الفقهية التطبيقية.')"><i class="fas fa-file-pdf"></i> قراءة التفاصيل وقراءة النازلة</button>
-                    </div>
-
-                    <div class="card search-item">
-                        <div class="card-title">
-                            <i class="fas fa-file-circle-check" style="color:#16a34a;"></i> 
-                            أسئلة مادة المدخل للعلوم القانونية S1 
-                            <span class="badge-tag">امتحان</span>
-                        </div>
-                        <div style="font-size:9px; color:var(--primary-dark); font-weight:bold; margin-bottom:4px;">
-                            <i class="fas fa-university"></i> جامعة ابن طفيل - كلية العلوم القانونية والسياسية
-                        </div>
-                        <div class="card-desc">نماذج امتحانات الأستاذ مع نمط الأسئلة المباشرة QCM والأسئلة المقالية.</div>
-                        <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('أرشيف S1', '• الجامعة: جامعة ابن طفيل\n\n• التفاصيل:\n- نموذج 2023: قارن بين القاعدة القانونية والقواعد الأخلاقية.\n- نموذج 2024 (QCM): 20 سؤالاً مع التصحيح.')"><i class="fas fa-eye"></i> استعراض التفاصيل</button>
                     </div>
                 </div>
             </div>
@@ -801,12 +767,6 @@
                     <div class="card-title"><i class="fas fa-user-group" style="color:#d97706;"></i> مجموعة شعبة القانون باللغة العربية (S3 - الفوج B)</div>
                     <div class="card-desc">عدد الأعضاء: 142 طالب • التخصص: القانون الخاص • الكلية: FSJES</div>
                     <button class="btn-action" style="margin-top:6px;" onclick="alert('تم إرسال طلب الانضمام إلى مجموعة التحضير الجماعي!')"><i class="fas fa-user-plus"></i> انضمام للمجموعة</button>
-                </div>
-
-                <div class="card search-item">
-                    <div class="card-title"><i class="fas fa-user-group" style="color:#2563eb;"></i> مجموعة الإقتصاد والتدبير / Economie S1</div>
-                    <div class="card-desc">عدد الأعضاء: 89 طالب • تبادل تمارين Microéconomie و Comptabilité.</div>
-                    <button class="btn-action" style="margin-top:6px;" onclick="alert('تم إرسال طلب الانضمام!')"><i class="fas fa-user-plus"></i> انضمام للمجموعة</button>
                 </div>
             </div>
 
@@ -836,21 +796,12 @@
 
                 <div class="card">
                     <div class="card-title"><i class="fas fa-clock"></i> حصصي المبرمجة</div>
-                    <div id="timetableList">
-                        <div class="timetable-item">
-                            <div>
-                                <div style="font-weight:bold; font-size:11px;">القانون الجنائي العام (محاضرة)</div>
-                                <div style="font-size:9px; color:var(--text-muted);">الإثنين • الساعة 08:30 - المدرج 4</div>
-                            </div>
-                            <span class="badge" style="background:#fef3c7; color:#d97706;">S3</span>
-                        </div>
-                    </div>
+                    <div id="timetableList"></div>
                 </div>
             </div>
 
             <!-- الصفحة 6: الإعدادات والمعلومات والمطور -->
             <div id="page-settings" class="page">
-                
                 <div class="card">
                     <div class="card-title"><i class="fas fa-wifi" style="color:var(--primary);"></i> خيارات استهلاك الإنترنت</div>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -941,6 +892,10 @@
     </div>
 
     <script>
+        // إعدادات Cloudinary الخاصة بـ Mohamed Miad
+        const CLOUDINARY_CLOUD_NAME = 'iku2cgwp';
+        const CLOUDINARY_PRESET = 'student_preset';
+
         const moroccanUniversities = {
             um5: { name: "جامعة محمد الخامس - الرباط", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - السويسي", "كلية العلوم القانونية والاقتصادية FSJES - أكدال", "كلية الآداب والعلوم الإنسانية FLSH", "كلية العلوم FS"] },
             uh2: { name: "جامعة الحسن الثاني - الدار البيضاء", faculties: ["كلية العلوم القانونية والاقتصادية FSJES - عين الشق", "كلية العلوم القانونية والاقتصادية FSJES - المحمدية", "كلية الآداب FLSH"] },
@@ -999,49 +954,164 @@
                 document.getElementById('cardFaculty').innerText = faculty;
             }
 
+            // حفظ البيانات فـ localStorage
+            const profile = { name, uniKey, faculty };
+            localStorage.setItem('mid_student_profile', JSON.stringify(profile));
+
             if(showModalAlert) {
-                showModal('تحديث الحساب', 'تم تحديث البيانات بنجاح!');
+                showModal('تحديث الحساب', 'تم تحديث البيانات وحفظها بنجاح!');
             }
         }
 
-        function addArchiveItem() {
+        function loadProfileData() {
+            const savedData = localStorage.getItem('mid_student_profile');
+            if(savedData) {
+                const profile = JSON.parse(savedData);
+                if(profile.name) {
+                    document.getElementById('inputFirstName').value = profile.name;
+                    document.getElementById('cardStudentName').innerText = profile.name;
+                }
+                if(profile.uniKey) {
+                    document.getElementById('profileUni').value = profile.uniKey;
+                    if(moroccanUniversities[profile.uniKey]) {
+                        document.getElementById('cardUniversity').innerText = moroccanUniversities[profile.uniKey].name;
+                    }
+                }
+                updateCollegesOptions('profileUni', 'profileFaculty');
+                if(profile.faculty) {
+                    document.getElementById('profileFaculty').value = profile.faculty;
+                    document.getElementById('cardFaculty').innerText = profile.faculty;
+                }
+                document.getElementById('authScreen').style.display = 'none';
+            }
+        }
+
+        // دالة الرفع السحابي لكلاوديناري
+        async function uploadFileToCloudinary(file) {
+            const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_PRESET);
+
+            const res = await fetch(url, { method: 'POST', body: formData });
+            if (!res.ok) throw new Error('فشل رفع الملف إلى السحابة');
+            const data = await res.json();
+            return { url: data.secure_url, resource_type: data.resource_type };
+        }
+
+        async function addStudentPost() {
+            const text = document.getElementById('newPostText').value.trim();
+            const fileInput = document.getElementById('newPostFile');
+            const btn = document.getElementById('btnPublishPost');
+
+            if(!text && fileInput.files.length === 0) {
+                alert('يرجى إضافة نص أو إرفاق ملف للشرك');
+                return;
+            }
+
+            let mediaHtml = '';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع والنشر...';
+
+            try {
+                if (fileInput.files.length > 0) {
+                    const uploaded = await uploadFileToCloudinary(fileInput.files[0]);
+                    if (uploaded.resource_type === 'video') {
+                        mediaHtml = `<video class="post-video" controls><source src="${uploaded.url}" type="video/mp4"></video>`;
+                    } else {
+                        mediaHtml = `<img src="${uploaded.url}" class="post-img" alt="ملف مجمع">`;
+                    }
+                }
+
+                const studentName = document.getElementById('cardStudentName').innerText;
+                const facultyName = document.getElementById('cardFaculty').innerText;
+
+                const postHtml = `
+                    <div class="feed-post">
+                        <div class="post-author">
+                            <div class="post-avatar" style="background:#16a34a;"><i class="fas fa-user-graduate"></i></div>
+                            <div>
+                                <div style="font-size:11px; font-weight:bold;">${studentName}</div>
+                                <div style="font-size:8px; color:var(--text-muted);">${facultyName}</div>
+                            </div>
+                        </div>
+                        <p style="font-size:11px; line-height:1.4;">${text}</p>
+                        ${mediaHtml}
+                        <div class="post-actions">
+                            <button class="post-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i> <span class="like-count">0</span> إعجاب</button>
+                            <button class="post-btn" onclick="showModal('التعليقات', 'لا توجد تعليقات بعد')"><i class="fas fa-comment"></i> تعليق</button>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('postsContainer').insertAdjacentHTML('afterbegin', postHtml);
+                document.getElementById('newPostText').value = '';
+                fileInput.value = '';
+            } catch (err) {
+                alert('حدث خطأ أثناء الرفع: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> نشر في فضاء الكلية';
+            }
+        }
+
+        async function addArchiveItem() {
             const title = document.getElementById('archiveTitleInput').value.trim();
             const type = document.getElementById('archiveTypeSelect').value;
             const uniKey = document.getElementById('archiveUniSelect').value;
             const faculty = document.getElementById('archiveFacultySelect').value;
             const desc = document.getElementById('archiveDescInput').value.trim();
+            const fileInput = document.getElementById('archiveFileInput');
+            const btn = document.getElementById('btnPublishArchive');
 
             if(!title || !uniKey || !desc) {
-                alert('يرجى ملا جميع البيانات (العنوان، الجامعة، والتفاصيل)');
+                alert('يرجى ملء جميع البيانات الأساسية (العنوان، الجامعة، والتفاصيل)');
                 return;
             }
 
-            const uniName = moroccanUniversities[uniKey] ? moroccanUniversities[uniKey].name : 'جامعة مغربية';
-            const studentName = document.getElementById('cardStudentName').innerText || 'طالب';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري رفع النموذج...';
 
-            const cardHtml = `
-                <div class="card search-item">
-                    <div class="card-title">
-                        <i class="fas fa-file-lines" style="color:var(--primary);"></i> 
-                        ${title}
-                        <span class="badge-tag">${type}</span>
+            let fileLinkBtn = '';
+            try {
+                if (fileInput.files.length > 0) {
+                    const uploaded = await uploadFileToCloudinary(fileInput.files[0]);
+                    fileLinkBtn = `\n\n• رابط الملف المرفق: ${uploaded.url}`;
+                }
+
+                const uniName = moroccanUniversities[uniKey] ? moroccanUniversities[uniKey].name : 'جامعة مغربية';
+                const studentName = document.getElementById('cardStudentName').innerText || 'طالب';
+
+                const cardHtml = `
+                    <div class="card search-item">
+                        <div class="card-title">
+                            <i class="fas fa-file-lines" style="color:var(--primary);"></i> 
+                            ${title}
+                            <span class="badge-tag">${type}</span>
+                        </div>
+                        <div style="font-size:9px; color:var(--primary-dark); font-weight:bold; margin-bottom:4px;">
+                            <i class="fas fa-university"></i> ${uniName} ${faculty ? ' - ' + faculty : ''}
+                        </div>
+                        <div class="card-desc">${desc.length > 70 ? desc.substring(0, 70) + '...' : desc}</div>
+                        <div style="font-size:8px; color:var(--text-muted); margin-top:4px;">بواسطة الطالب: ${studentName}</div>
+                        <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('${title}', '• الجامعة: ${uniName}\n• الكلية: ${faculty}\n• نوع المشاركة: ${type}\n• الناشر: ${studentName}\n\n• التفاصيل:\n${desc}${fileLinkBtn}')">
+                            <i class="fas fa-eye"></i> قراءة التفاصيل والمعاينة
+                        </button>
                     </div>
-                    <div style="font-size:9px; color:var(--primary-dark); font-weight:bold; margin-bottom:4px;">
-                        <i class="fas fa-university"></i> ${uniName} ${faculty ? ' - ' + faculty : ''}
-                    </div>
-                    <div class="card-desc">${desc.length > 70 ? desc.substring(0, 70) + '...' : desc}</div>
-                    <div style="font-size:8px; color:var(--text-muted); margin-top:4px;">بواسطة الطالب: ${studentName}</div>
-                    <button class="btn-action" style="margin-top:6px; background:#1e293b;" onclick="showModal('${title}', '• الجامعة: ${uniName}\n• الكلية: ${faculty}\n• نوع المشاركة: ${type}\n• الناشر: ${studentName}\n\n• التفاصيل:\n${desc}')">
-                        <i class="fas fa-eye"></i> قراءة التفاصيل كاملة
-                    </button>
-                </div>
-            `;
+                `;
 
-            document.getElementById('archiveListContainer').insertAdjacentHTML('afterbegin', cardHtml);
+                document.getElementById('archiveListContainer').insertAdjacentHTML('afterbegin', cardHtml);
 
-            document.getElementById('archiveTitleInput').value = '';
-            document.getElementById('archiveDescInput').value = '';
-            alert('تم نشر النموذج بنجاح في أرشيف الطلبة!');
+                document.getElementById('archiveTitleInput').value = '';
+                document.getElementById('archiveDescInput').value = '';
+                fileInput.value = '';
+                alert('تم نشر النموذج بنجاح في أرشيف الطلبة!');
+            } catch (err) {
+                alert('حدث خطأ أثناء نشر النموذج: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-share-nodes"></i> نشر النموذج لجميع الطلبة';
+            }
         }
 
         function toggleDataSaver() {
@@ -1049,7 +1119,7 @@
             const btn = document.getElementById('btnDataSaver');
             if(document.body.classList.contains('data-saver')) {
                 btn.classList.add('active-saver');
-                alert('تم تفعيل وضع توفير البيانات (تقليل استهلاك الإنترنت وإخفاء الفيديو)');
+                alert('تم تفعيل وضع توفير البيانات (تقليل استهلاك الإنترنت وإخفاء الفيديو والصور)');
             } else {
                 btn.classList.remove('active-saver');
                 alert('تم إيقاف وضع توفير البيانات');
@@ -1077,8 +1147,31 @@
             `;
 
             document.getElementById('timetableList').insertAdjacentHTML('afterbegin', itemHtml);
+            saveTimetable();
             document.getElementById('ttSubject').value = '';
             document.getElementById('ttTime').value = '';
+        }
+
+        function saveTimetable() {
+            const html = document.getElementById('timetableList').innerHTML;
+            localStorage.setItem('mid_student_timetable', html);
+        }
+
+        function loadTimetable() {
+            const savedHtml = localStorage.getItem('mid_student_timetable');
+            if(savedHtml) {
+                document.getElementById('timetableList').innerHTML = savedHtml;
+            } else {
+                document.getElementById('timetableList').innerHTML = `
+                    <div class="timetable-item">
+                        <div>
+                            <div style="font-weight:bold; font-size:11px;">القانون الجنائي العام (محاضرة)</div>
+                            <div style="font-size:9px; color:var(--text-muted);">الإثنين • الساعة 08:30 - المدرج 4</div>
+                        </div>
+                        <span class="badge" style="background:#fef3c7; color:#d97706;">S3</span>
+                    </div>
+                `;
+            }
         }
 
         function changeAppLanguage() {
@@ -1092,34 +1185,6 @@
             } else {
                 document.getElementById('txt-subhead').innerText = "دليل الطالب الجامعي المغربي";
             }
-        }
-
-        function addStudentPost() {
-            const text = document.getElementById('newPostText').value.trim();
-            if(!text) return;
-
-            const studentName = document.getElementById('cardStudentName').innerText;
-            const facultyName = document.getElementById('cardFaculty').innerText;
-
-            const postHtml = `
-                <div class="feed-post">
-                    <div class="post-author">
-                        <div class="post-avatar" style="background:#16a34a;"><i class="fas fa-user-graduate"></i></div>
-                        <div>
-                            <div style="font-size:11px; font-weight:bold;">${studentName}</div>
-                            <div style="font-size:8px; color:var(--text-muted);">${facultyName}</div>
-                        </div>
-                    </div>
-                    <p style="font-size:11px; line-height:1.4;">${text}</p>
-                    <div class="post-actions">
-                        <button class="post-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i> <span class="like-count">0</span> إعجاب</button>
-                        <button class="post-btn" onclick="showModal('التعليقات', 'لا توجد تعليقات بعد')"><i class="fas fa-comment"></i> تعليق</button>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('postsContainer').insertAdjacentHTML('afterbegin', postHtml);
-            document.getElementById('newPostText').value = '';
         }
 
         function toggleLike(btn) {
@@ -1179,6 +1244,8 @@
         window.onload = function() {
             updateCollegesOptions('profileUni', 'profileFaculty');
             updateCollegesOptions('archiveUniSelect', 'archiveFacultySelect');
+            loadProfileData();
+            loadTimetable();
         };
     </script>
 </body>
